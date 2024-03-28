@@ -1,0 +1,11 @@
+keyboard
+pygame
+opencv-python
+pillow
+requests
+google-cloud
+google-cloud-vision
+thefuzz
+pytesseract
+easyocr
+mss
