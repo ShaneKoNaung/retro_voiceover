@@ -9,3 +9,4 @@ thefuzz
 pytesseract
 easyocr
 mss
+pywin32
