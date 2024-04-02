@@ -78,6 +78,36 @@ def capture_window_to_file(window_handle, file_path):
     
     return pil_image
 
+
+def capture_window_as_img(window_handle):
+    """Return a PIL Image object of the screenshot of the windows"""
+
+    # Get the window dimensions
+    left, top, right, bottom = win32gui.GetWindowRect(window_handle)
+    width = right - left
+    height = bottom - top
+    monitor = {"top": top, "left": left, "width": width, "height": height}
+
+    # # Create a device context (DC) for the window
+    hwndDC = win32gui.GetWindowDC(window_handle)
+    mfcDC = win32ui.CreateDCFromHandle(hwndDC)
+    saveDC = mfcDC.CreateCompatibleDC()
+
+    with mss() as sct:
+        # Capture the screen
+        screenshot = sct.grab(monitor)
+
+        # Convert to an array
+        img = np.array(screenshot)
+
+        # Convert from BGR to RGB
+        pil_image = Image.frombytes("RGB", screenshot.size, screenshot.bgra, "raw", "BGRX")
+
+    win32gui.ReleaseDC(window_handle, hwndDC)
+
+    return pil_image
+
+
 if __name__ == "__main__":
     window_handle = find_window_id("RetroArch")
     if window_handle:
